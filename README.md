@@ -1,7 +1,7 @@
-### NAME:
-### ROLL NO :
-### DEPARTMENT 
-### DATE
+### NAME: SURYA.R
+### ROLL NO : 212224040339
+### DEPARTMENT : CSE
+### DATE : 09-05-2025
 
 
 
@@ -138,15 +138,38 @@ Run the Python script.
 
 Check if the message appears in the HiveMQ Web Client.
 ## PROGRAM
-[
+```
+pip install paho-mqtt
+import paho.mqtt.client as mqtt
+import time
 
+# MQTT broker settings (replace with your broker info)
+BROKER = "broker.hivemq.com"  # Or your cloud MQTT broker (e.g., "mqtt.eclipseprojects.io")
+PORT = 1883
+TOPIC = "iot/device/data"
 
+# Create client instance
+client = mqtt.Client()
 
+# Connect to MQTT broker
+client.connect(BROKER, PORT, 60)
 
+# Simulate data and publish
+while True:
+    data = "Temperature: 25.5"  # Example payload
+    client.publish(TOPIC, data)
+    print(f"Sent: {data}")
+    time.sleep(5)  # Delay between messages
 
-]
+client.username_pw_set("USERNAME", "PASSWORD")
+client.tls_set()  # For SSL connection
+```
+
 
 ### OUTPUT SCREENSHOTS
+![IIOT](https://github.com/user-attachments/assets/d182a138-3cad-4a4c-b0f6-58a687799eeb)
+
+
 
 
 
