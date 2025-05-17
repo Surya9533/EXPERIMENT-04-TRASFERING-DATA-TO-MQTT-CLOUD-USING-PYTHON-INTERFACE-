@@ -139,25 +139,48 @@ Run the Python script.
 Check if the message appears in the HiveMQ Web Client.
 ## PROGRAM
  ```
-pip install paho-mqtt
 import paho.mqtt.client as mqtt
 import time
-# MQTT broker settings (replace with your broker info)
-BROKER = "broker.hivemq.com"  # Or your cloud MQTT broker (e.g., "mqtt.eclipseprojects.io")
-PORT = 1883
-TOPIC = "iot/device/data"
-# Create client instance
-client = mqtt.Client()
-# Connect to MQTT broker
+
+# HiveMQ Cloud credentials
+BROKER = "359f43e9448d4f6ebc5011e7c24dc49b.s1.eu.hivemq.cloud"  # Updated HiveMQ Cloud instance URL
+PORT = 8884  # Secure WebSocket port
+TOPIC = "sensor/temperature"
+USERNAME = "Surya21"  # Replace with your HiveMQ Cloud username
+PASSWORD = "SK_zzz4"  # Replace with your HiveMQ Cloud password
+
+# Fixed temperature value
+TEMPERATURE_VALUE = 25.5
+
+# Callback when the client connects to the broker
+def on_connect(client, userdata, flags, rc, properties=None):
+    if rc == 0:
+        print("Connected to HiveMQ Cloud successfully")
+    else:
+        print(f"Connection failed with code {rc}")
+
+# Create MQTT client and set WebSocket transport
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, transport="websockets")
+client.username_pw_set(USERNAME, PASSWORD)
+client.tls_set()  # Enable TLS for secure WebSockets
+client.on_connect = on_connect
+
+# Connect to HiveMQ Cloud using WebSocket
 client.connect(BROKER, PORT, 60)
-# Simulate data and publish
-while True:
-    data = "Temperature: 25.5"  # Example payload
-    client.publish(TOPIC, data)
-    print(f"Sent: {data}")
-    time.sleep(5)  # Delay between messages
-client.username_pw_set("USERNAME", "PASSWORD")
-client.tls_set()  # For SSL connection
+client.loop_start()
+
+# Publish temperature value repeatedly every 5 seconds
+try:
+    while True:
+        client.publish(TOPIC, TEMPERATURE_VALUE)
+        print(f"Published temperature: {TEMPERATURE_VALUE} to topic: {TOPIC}")
+        time.sleep(5)  # Adjust interval as needed
+except KeyboardInterrupt:
+    print("Stopping MQTT client...")
+    client.loop_stop()
+    client.disconnect()
+
+
 
 ```
 
