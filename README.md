@@ -186,7 +186,8 @@ except KeyboardInterrupt:
 
 ### OUTPUT SCREENSHOTS
 
-![IIOT](https://github.com/user-attachments/assets/d182a138-3cad-4a4c-b0f6-58a687799eeb)
+![image](https://github.com/user-attachments/assets/744f3846-1f5d-4afd-9f20-c7562da5c8e1)
+
 
 ## Results
 
